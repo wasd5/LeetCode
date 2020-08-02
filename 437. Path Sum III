@@ -1,0 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int pathSum(TreeNode* root, int sum) {
+        if(!root) {
+            return 0;
+        }
+        /* store prefixSum values of root to current node */
+        unordered_map<int, int> mp;
+        int ans = 0;
+        dfs(root, mp, ans, 0, sum);
+        return ans;
+    }
+private:
+    void dfs(TreeNode* root, unordered_map<int, int>& mp, int& ans, int curSum, int sum) {
+        if(!root) {
+            return ;
+        }
+        curSum += root->val;
+        if(curSum == sum) {
+            ans++;
+        }
+        /* find how many sufix arraies have sum equal to 'sum', those prefix sum should be curSum-sum */
+        if(mp.find(curSum-sum) != mp.end()) {
+            ans += mp[curSum-sum];
+        }
+        mp[curSum] += 1;
+        dfs(root->left, mp, ans, curSum, sum);
+        dfs(root->right, mp, ans, curSum, sum);
+        mp[curSum] -= 1;
+        if(mp[curSum] == 0) {
+            mp.erase(curSum);
+        }
+    }
+};
