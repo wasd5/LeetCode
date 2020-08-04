@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& mat, int target) {
+        if(mat.size() == 0 || mat[0].size() == 0) {
+            return false;
+        }
+        int row, col = -1;
+        int low = 0;
+        int high = mat.size()*mat[0].size()-1;
+        while(low < high) {
+            int mid = low + (high-low) / 2;
+            to_pos(mid, mat.size(), mat[0].size(), row, col);
+            if(mat[row][col] == target) {
+                return true;
+            }
+            else if(mat[row][col] < target) {
+                low = mid+1;
+            }
+            else {
+                high = mid-1;
+            }
+        }
+        to_pos(low, mat.size(), mat[0].size(), row, col);
+        return mat[row][col] == target;
+    }
+private:
+    void to_pos(int index, int rowSize, int colSize, int& row, int& col) {
+        row = index/colSize;
+        col = index-row*colSize;
+    }
+};
