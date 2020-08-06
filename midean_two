@@ -1,0 +1,18 @@
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        
+    }
+private:
+/*
+    xxxxxxxxx | xxxxxxxxx    mid1=k/2
+    yyyyyyyyy | yyyyyyyyy    mid2=k/2
+    mid1 < mid2 -- kth smallest cannot be among first k/2 X
+*/
+    /* return kth smallest among nums1[i]..., end, nums2[j], ..., end
+    double KthSmallestInTwoSortedArrays(int k, const vector<int>& nums1, const vector<int>& nums2, int i, int j) {
+        if(nums1.size() < k / 2) {
+            return KthSmallestInTwoSortedArrays();
+        }
+    }
+};
