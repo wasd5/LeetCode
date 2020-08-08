@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        if(numCourses == 0) {
+            return {};
+        }
+        vector<vector<int>> adjList(numCourses);
+        for(vector<int>& p : prerequisites) {
+            adjList[p[1]].push_back(p[0]);
+        }
+        vector<int> indegree(numCourses, 0);
+        for(vector<int>& c : adjList) {
+            for(int n : c) {
+                indegree[n]++;
+            }
+        }
+        vector<int> ans;
+        queue<int> zero_indegree;
+        for(int i = 0; i < indegree.size(); i++) {
+            if(indegree[i] == 0) {
+                zero_indegree.push(i);
+            }
+        }
+        while(!zero_indegree.empty()) {
+            int n = zero_indegree.front();
+            zero_indegree.pop();
+            ans.push_back(n);
+            for(int child : adjList[n]) {
+                indegree[child]--;
+                if(indegree[child] == 0) {
+                    zero_indegree.push(child);
+                }
+            }
+        }
+        if(ans.size() < numCourses) {
+            return {};
+        }
+        else {
+            return ans;
+        }
+    }
+};
