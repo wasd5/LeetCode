@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        unordered_map<TreeNode*, int> height;
+        getHeight(root, height);
+        return balanced(root, height);
+    }
+private:
+    int getHeight(TreeNode* root, unordered_map<TreeNode*, int>& height) {
+        if(!root) {
+            return 0;
+        }
+        if(height.find(root) != height.end()) {
+            return height[root];
+        }
+        int left = getHeight(root->left, height);
+        int right = getHeight(root->right, height);
+        height[root] = max(left, right) + 1;
+        return max(left, right) + 1;
+    }
+    
+    bool balanced(TreeNode* root, unordered_map<TreeNode*, int>& height) {
+        if(!root) {
+            return true;
+        }
+        int left = !root->left ? 0 : height[root->left];
+        int right = !root->right ? 0 : height[root->right];
+        return left - right >= -1 && left - right <= 1 && \
+            balanced(root->left, height) && balanced(root->right, height);
+    }
+};
